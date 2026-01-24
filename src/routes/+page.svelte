@@ -2,9 +2,13 @@
   import { onMount } from "svelte";
   import Navbar from "../components/Navbar.svelte";
   import { getI18n } from "$lib/i18n.svelte";
+  import { getTheme } from "$lib/theme.svelte";
+  import outlineImg from "$lib/assets/outline.svg";
 
   const i18n = getI18n();
+  const theme = getTheme();
   let showContent = $state(false);
+  let showOutline = $state(false);
   let highlightActive = $state(false);
 
   onMount(() => {
@@ -13,8 +17,12 @@
     }, 400);
 
     setTimeout(() => {
+      showOutline = true;
+    }, 1000);
+
+    setTimeout(() => {
       highlightActive = true;
-    }, 3000);
+    }, 2000);
   });
 </script>
 
@@ -25,39 +33,45 @@
   <section class="min-h-screen w-full relative overflow-hidden flex flex-col">
     <Navbar />
 
-    <!-- Main Centered Content -->
+    <!-- Main Content -->
     <div
-      class="absolute inset-0 flex flex-col justify-center items-center z-20 px-6 md:px-10"
+      class="absolute inset-0 flex flex-col justify-center items-center z-20 px-6 md:px-10 pointer-events-none"
     >
-      <h1
-        class="syne font-bold uppercase text-center leading-none tracking-tighter transition-all duration-1000 {showContent
-          ? 'opacity-100 blur-0 scale-100'
-          : 'opacity-0 blur-xl scale-95'} text-[12vw] sm:text-7xl md:text-[14vw]"
-      >
-        {i18n.t("hero.title")}
-      </h1>
+      <!-- Title Layer (Background) -->
+      <img
+        src={outlineImg}
+        alt="CREATORS"
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+         w-[180vw] md:w-[90vw] transition-all duration-1000 -z-10
+         {theme?.current === 'light' ? 'invert' : ''}
+         {showOutline
+          ? 'opacity-100 md:opacity-100 blur-0 scale-100'
+          : 'opacity-0 blur-xl scale-100'}"
+      />
+
+      <!-- Subtitle Layer (Underneath Title vertically) -->
+      <!-- Mobile Subtitle -->
       <p
-        class="dm-mono font-light uppercase mt-4 tracking-widest transition-all duration-1000 delay-500 {showContent
-          ? 'translate-y-0'
-          : 'opacity-0 translate-y-4'} text-md md:text-lg max-w-[90vw] md:max-w-3xl text-center leading-relaxed"
+        class="md:hidden absolute bottom-16 left-1/2 transform -translate-x-1/2
+        dm-mono font-light uppercase tracking-[0.3em] transition-all duration-1000 delay-500
+        {showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} 
+        text-[10px] max-w-[80vw] text-center leading-loose pointer-events-auto"
       >
         {#each i18n.t("hero.subtitle").split(" ") as word, i}
-          {@const isSpecial =
-            word.toUpperCase().includes("REVENUE") ||
-            word.toUpperCase().includes("MÉTRICAS")}
+          {@const isSpecial = word.toUpperCase().includes("KPI'S")}
           <span
             class="relative inline-block transition-opacity duration-500 {showContent
               ? highlightActive && isSpecial
                 ? 'opacity-100'
-                : 'opacity-70'
+                : 'opacity-60'
               : 'opacity-0'}"
           >
             {word}
             {#if isSpecial}
               <span
-                class="absolute -bottom-2 -left-3 h-[1px] bg-brand-fg transition-[width,opacity] duration-500 ease-in block"
+                class="absolute -bottom-1 -left-1 h-[1px] bg-brand-fg transition-[width,opacity] duration-500 ease-in block"
                 style="width: {highlightActive
-                  ? '120%'
+                  ? '110%'
                   : '0%'}; opacity: {highlightActive ? '0.6' : '0'}"
               ></span>
             {/if}
@@ -65,16 +79,35 @@
           </span>
         {/each}
       </p>
-    </div>
 
-    <!-- Bottom Description -->
-    <div class="mt-auto w-full flex justify-center pb-20 md:pb-32 z-20 px-10">
+      <!-- Desktop Subtitle -->
       <p
-        class="dm-mono font-light tracking-tight transition-all duration-1000 delay-700 {showContent
-          ? 'opacity-40 translate-y-0'
-          : 'opacity-0 translate-y-4'} text-md max-w-[80vw] md:max-w-xl text-center leading-relaxed uppercase"
+        class="hidden md:block absolute bottom-40 left-1/2 transform -translate-x-1/2
+        dm-mono font-light uppercase tracking-[0.3em] transition-all duration-1000 delay-500
+        {showContent ? 'opacity-100' : 'opacity-0'} 
+        text-base max-w-3xl text-center leading-loose pointer-events-auto"
       >
-        {i18n.t("hero.description")}
+        {#each i18n.t("hero.subtitle").split(" ") as word, i}
+          {@const isSpecial = word.toUpperCase().includes("KPI'S")}
+          <span
+            class="relative inline-block transition-opacity duration-500 {showContent
+              ? highlightActive && isSpecial
+                ? 'opacity-100'
+                : 'opacity-60'
+              : 'opacity-0'}"
+          >
+            {word}
+            {#if isSpecial}
+              <span
+                class="absolute -bottom-1 -left-1 h-[1px] bg-brand-fg transition-[width,opacity] duration-500 ease-in block"
+                style="width: {highlightActive
+                  ? '110%'
+                  : '0%'}; opacity: {highlightActive ? '0.6' : '0'}"
+              ></span>
+            {/if}
+            {i < i18n.t("hero.subtitle").split(" ").length - 1 ? "\u00A0" : ""}
+          </span>
+        {/each}
       </p>
     </div>
   </section>
@@ -182,10 +215,5 @@
 <style>
   :global(body) {
     margin: 0;
-  }
-
-  h1 {
-    font-size: clamp(4rem, 10vw, 15rem);
-    letter-spacing: -0.05em;
   }
 </style>
