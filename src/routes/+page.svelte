@@ -3,7 +3,27 @@
   import Navbar from "../components/Navbar.svelte";
   import { getI18n } from "$lib/i18n.svelte";
   import { getTheme } from "$lib/theme.svelte";
-  import outlineImg from "$lib/assets/outline.svg";
+
+  import v0 from "$lib/assets/letters/Vector.png";
+  import v1 from "$lib/assets/letters/Vector-1.png";
+  import v2 from "$lib/assets/letters/Vector-2.png";
+  import v3 from "$lib/assets/letters/Vector-3.png";
+  import v4 from "$lib/assets/letters/Vector-4.png";
+  import v5 from "$lib/assets/letters/Vector-5.png";
+  import v6 from "$lib/assets/letters/Vector-6.png";
+  import v7 from "$lib/assets/letters/Vector-7.png";
+
+  const letterItems = [
+    { src: v7, width: "auto", mx: "-2px" }, // C
+    { src: v6, width: "auto", mx: "-2px" }, // R
+    { src: v5, width: "auto", mx: "-2px" }, // E
+    { src: v4, width: "auto", mx: "-2px" }, // A
+    { src: v3, width: "auto", mx: "-20px" }, // T
+    { src: v2, width: "auto", mx: "-2px" }, // R
+    { src: v1, width: "auto", mx: "-2px" }, // O
+    { src: v0, width: "auto", mx: "-2px" }, // S
+  ];
+  let activeLetters = $state(new Array(letterItems.length).fill(false));
 
   const i18n = getI18n();
   const theme = getTheme();
@@ -14,15 +34,25 @@
   onMount(() => {
     setTimeout(() => {
       showContent = true;
-    }, 400);
+    }, 2000);
 
     setTimeout(() => {
       showOutline = true;
-    }, 1000);
+      // Military sequence activation
+      const sequence = [3, 0, 5, 1, 7, 2, 4, 6]; // Random-ish order
+      sequence.forEach((index, i) => {
+        setTimeout(
+          () => {
+            activeLetters[index] = true;
+          },
+          1200 + i * 150,
+        );
+      });
+    }, 500);
 
     setTimeout(() => {
       highlightActive = true;
-    }, 2000);
+    }, 2300);
   });
 </script>
 
@@ -38,23 +68,29 @@
       class="absolute inset-0 flex flex-col justify-center items-center z-20 px-6 md:px-10 pointer-events-none"
     >
       <!-- Title Layer (Background) -->
-      <img
-        src={outlineImg}
-        alt="CREATORS"
+      <div
         class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-         w-[180vw] md:w-[90vw] transition-all duration-1000 -z-10
-         {theme?.current === 'light' ? 'invert' : ''}
-         {showOutline
-          ? 'opacity-100 md:opacity-100 blur-0 scale-100'
-          : 'opacity-0 blur-xl scale-100'}"
-      />
+         w-[70vw] md:w-[40vw] h-12 md:h-24 flex justify-center items-center transition-all duration-1000 -z-10
+         {theme?.current === 'dark' ? 'invert' : ''}
+         {showOutline ? 'opacity-100 blur-0' : 'opacity-0 blur-xl'}"
+      >
+        {#each letterItems as item, i}
+          <img
+            src={item.src}
+            alt="Letter {i}"
+            style="margin-left: {item.mx}; margin-right: {item.mx}; width: {item.width}"
+            class="h-full object-contain transition-all duration-300
+              {activeLetters[i] ? 'letter-active' : 'opacity-0'}"
+          />
+        {/each}
+      </div>
 
       <!-- Subtitle Layer (Underneath Title vertically) -->
       <!-- Mobile Subtitle -->
       <p
         class="md:hidden absolute bottom-16 left-1/2 transform -translate-x-1/2
         dm-mono font-light uppercase tracking-[0.3em] transition-all duration-1000 delay-500
-        {showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} 
+        {showContent ? 'opacity-100' : 'opacity-0'} 
         text-[10px] max-w-[80vw] text-center leading-loose pointer-events-auto"
       >
         {#each i18n.t("hero.subtitle").split(" ") as word, i}
@@ -218,5 +254,45 @@
 <style>
   :global(body) {
     margin: 0;
+  }
+
+  @keyframes flicker {
+    0% {
+      opacity: 0;
+    }
+    5% {
+      opacity: 1;
+    }
+    10% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    20% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    30% {
+      opacity: 0.4;
+    }
+    35% {
+      opacity: 1;
+    }
+    40% {
+      opacity: 0;
+    }
+    45% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .letter-active {
+    animation: flicker 0.6s steps(1) forwards;
   }
 </style>
