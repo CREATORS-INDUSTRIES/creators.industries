@@ -4,14 +4,14 @@
   import { getI18n } from "$lib/i18n.svelte";
   import { getTheme } from "$lib/theme.svelte";
 
-  import v0 from "$lib/assets/letters/Vector.png";
-  import v1 from "$lib/assets/letters/Vector-1.png";
-  import v2 from "$lib/assets/letters/Vector-2.png";
-  import v3 from "$lib/assets/letters/Vector-3.png";
-  import v4 from "$lib/assets/letters/Vector-4.png";
-  import v5 from "$lib/assets/letters/Vector-5.png";
-  import v6 from "$lib/assets/letters/Vector-6.png";
-  import v7 from "$lib/assets/letters/Vector-7.png";
+  import v0 from "$lib/assets/creator/Vector.png";
+  import v1 from "$lib/assets/creator/Vector-1.png";
+  import v2 from "$lib/assets/creator/Vector-2.png";
+  import v3 from "$lib/assets/creator/Vector-3.png";
+  import v4 from "$lib/assets/creator/Vector-4.png";
+  import v5 from "$lib/assets/creator/Vector-5.png";
+  import v6 from "$lib/assets/creator/Vector-6.png";
+  import v7 from "$lib/assets/creator/Vector-7.png";
 
   const letterItems = [
     { src: v7, width: "auto", mx: "-2px" }, // C
