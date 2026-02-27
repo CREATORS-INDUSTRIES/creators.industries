@@ -1,9 +1,11 @@
 <script>
   import { onMount } from "svelte";
   import Navbar from "../components/Navbar.svelte";
+  import ScrambleText from "../components/ScrambleText.svelte";
   import { getI18n } from "$lib/i18n.svelte";
   import { getTheme } from "$lib/theme.svelte";
 
+  import droneVideo from "$lib/assets/dots/drone.mp4";
   import v0 from "$lib/assets/creator/Vector.png";
   import v1 from "$lib/assets/creator/Vector-1.png";
   import v2 from "$lib/assets/creator/Vector-2.png";
@@ -26,21 +28,23 @@
   let activeLetters = $state(new Array(letterItems.length).fill(false));
 
   const i18n = getI18n();
-  // const theme = getTheme();
 
+  // Animation States
+  let videoReady = $state(false); // Controls the drone video intro
   let showContent = $state(false);
   let showOutline = $state(false);
   let highlightActive = $state(false);
 
   onMount(() => {
+    // 1. Start video animation almost immediately
     setTimeout(() => {
-      showContent = true;
-    }, 1700);
+      videoReady = true;
+    }, 100);
 
+    // 2. Letters begin to appear
     setTimeout(() => {
       showOutline = true;
-      // Military sequence activation
-      const sequence = [3, 0, 5, 1, 7, 2, 4, 6]; // Random-ish order
+      const sequence = [3, 0, 5, 1, 7, 2, 4, 6];
       sequence.forEach((index, i) => {
         setTimeout(
           () => {
@@ -51,6 +55,12 @@
       });
     }, 300);
 
+    // 3. Subtitle appears
+    setTimeout(() => {
+      showContent = true;
+    }, 1700);
+
+    // 4. Final highlight
     setTimeout(() => {
       highlightActive = true;
     }, 2300);
@@ -60,31 +70,27 @@
 <main
   class="min-h-screen w-full overflow-x-hidden bg-black text-white transition-colors duration-500 dark"
 >
-  <Navbar />
-  <!-- Hero Section (Strictly Isolated Dark Mode) -->
   <section
     class="min-h-screen w-full relative overflow-hidden flex flex-col dark bg-black"
   >
-    <!-- Background Video -->
-    <div
-      class="absolute inset-0 z-0 overflow-hidden pointer-events-none transition-opacity duration-[2000ms] opacity-40"
+    <video
+      muted
+      playsinline
+      autoplay
+      loop
+      class="absolute inset-0 w-full h-full object-cover grayscale invert z-0 transition-all duration-[2500ms] ease-out
+  {videoReady ? 'opacity-30 blur-0 scale-100' : 'opacity-0 blur-2xl scale-125'}"
+      style="
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  "
     >
-      <video
-        autoplay
-        loop
-        muted
-        playsinline
-        class="w-screen h-screen object-cover"
-      >
-        <source src="/barcelona.mp4" type="video/mp4" />
-      </video>
-    </div>
+      <source src={droneVideo} type="video/mp4" />
+    </video>
 
-    <!-- Main Content -->
     <div
       class="absolute inset-0 flex flex-col justify-center items-center z-20 px-6 md:px-10 pointer-events-none"
     >
-      <!-- Title Layer (Background) -->
       <div
         class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
          w-[70vw] md:w-[40vw] h-12 md:h-24 flex justify-center items-center transition-all duration-1000 -z-10
@@ -102,85 +108,134 @@
         {/each}
       </div>
 
-      <!-- Subtitle Layer (Underneath Title vertically) -->
-      <!-- Mobile Subtitle -->
-
-      <!-- Desktop Subtitle -->
       <p
         class="md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-[calc(3rem+0.75rem)]
-        dm-mono font-light uppercase tracking-[0.3em]
-        {showContent ? 'letter-active' : 'opacity-0'} 
+        dm-mono font-light uppercase tracking-[0.3em] transition-all duration-1000
+        {showContent ? 'opacity-100' : 'opacity-0'} 
         text-base max-w-3xl text-center leading-loose pointer-events-auto text-white"
       >
-        [{i18n.t("hero.subtitle")}]
+        {i18n.t("hero.subtitle")}
       </p>
     </div>
   </section>
 
-  <!-- Product/Tactical Video Section -->
   <section
     class="w-screen py-20 md:py-32 px-6 md:px-24 bg-black flex flex-col items-center overflow-hidden"
   >
     <div class="w-full max-w-6xl">
-      <div class="flex flex-col items-center gap-16">
-        <!-- Mission Content (Above Video) -->
-        <div class="flex flex-col items-center text-center gap-6 max-w-4xl">
-          <div class="flex flex-col gap-3 items-center">
-            <h2 class="dm-mono text-sm font-light text-white/40 uppercase">
-              [{i18n.t("section.services.title")}]
-            </h2>
-          </div>
-
-          <p class="dm-mono font-light uppercase text-sm text-white/80">
-            {i18n.t("section.mission.text")}
-          </p>
-        </div>
-
-        <!-- Video Container -->
-        <div class="relative w-full max-w-4xl group">
-          <!-- Tactical Frame corners -->
-          <div
-            class="absolute -top-4 -left-4 w-8 h-8 border-t border-l border-white/20"
-          ></div>
-          <div
-            class="absolute -top-4 -right-4 w-8 h-8 border-t border-r border-white/20"
-          ></div>
-          <div
-            class="absolute -bottom-4 -left-4 w-8 h-8 border-b border-l border-white/20"
-          ></div>
-          <div
-            class="absolute -bottom-4 -right-4 w-8 h-8 border-b border-r border-white/20"
-          ></div>
-
-          <div
-            class="relative aspect-video overflow-hidden bg-white/5 border-white/10 group-hover:border-white/30 transition-colors duration-500"
-          >
-            <video
-              autoplay
-              loop
-              muted
-              playsinline
-              class="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-            >
-              <source src="/demo.mp4" type="video/mp4" />
-            </video>
-
-            <!-- Scanline Overlay -->
-            <div
-              class="absolute inset-0 pointer-events-none bg-scanline opacity-20"
-            ></div>
-          </div>
-        </div>
-        <p
-          class="dm-mono text-xs md:text-xs text-center text-white/30 max-w-2xl leading-relaxed uppercase tracking-widest"
+      <div class="flex items-center gap-6 mb-12">
+        <span
+          class="dm-mono text-xs text-white/30 uppercase tracking-widest flex-shrink-0"
+          >[SYSTEMS]</span
         >
-          Real-time situational awareness powered by AI models. Our systems
-          provide persistent monitoring and autonomous detection in dynamic
-          environments.
-        </p>
+        <div class="flex-1 h-[1px] bg-white/10"></div>
+      </div>
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-[1px] bg-white/10"
+      >
+        <div
+          class="md:col-span-2 md:row-span-2 bg-black p-8 flex flex-col gap-6"
+        >
+          <div class="flex items-center justify-end">
+            <span
+              class="dm-mono text-[10px] text-white/40 border border-white/10 px-2 py-1 uppercase tracking-widest"
+              >VISION & SOUND</span
+            >
+          </div>
+
+          <h2
+            class="dm-mono text-lg md:text-xl font-thin uppercase tracking-tight text-white/20"
+          >
+            <ScrambleText
+              length={8}
+              speed={100}
+              class="text-white tabular-nums"
+            />
+            - DRONE DETECTION SYSTEM
+          </h2>
+
+          <div class="relative flex-1 group/video min-h-0">
+            <div
+              class="relative h-full overflow-hidden bg-white/5 border border-white/10 group-hover/video:border-white/25 transition-colors duration-500"
+            >
+              <video
+                autoplay
+                loop
+                muted
+                playsinline
+                class="w-full h-full object-cover grayscale opacity-60 group-hover/video:grayscale-0 group-hover/video:opacity-100 transition-all duration-700"
+              >
+                <source src="/demo.mp4" type="video/mp4" />
+              </video>
+              <div
+                class="absolute inset-0 pointer-events-none bg-scanline opacity-20"
+              ></div>
+            </div>
+          </div>
+
+          <a
+            href="mailto:{i18n.t(
+              'section.footer.email',
+            )}?subject=Drone detection system demo"
+            class="dm-mono sm:w-fit h-fit text-[10px] uppercase tracking-widest text-white/80 border border-white/30 px-5 py-2.5 hover:bg-white hover:text-black transition-all duration-300 text-center"
+          >
+            REQUEST DEMO →
+          </a>
+        </div>
+
+        <div class="bg-black p-8 flex flex-col gap-5">
+          <div class="flex items-center justify-end">
+            <span
+              class="dm-mono text-[10px] text-white/20 border border-white/10 px-2 py-1 uppercase tracking-widest"
+              >CLASSIFIED</span
+            >
+          </div>
+          <div
+            class="flex-1 border border-white/5 bg-white/[0.02] flex items-center justify-center min-h-32"
+          >
+            <div class="relative w-8 h-8">
+              <div
+                class="absolute inset-0 border border-white/10 rotate-45"
+              ></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-1 h-1 bg-white/20 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          <h3
+            class="dm-mono text-sm font-light text-white/25 uppercase tracking-tight"
+          >
+            [REDACTED]
+          </h3>
+        </div>
+
+        <div class="bg-zinc-700 p-8 flex flex-col gap-5">
+          <div class="flex items-center justify-end">
+            <span
+              class="dm-mono text-[10px] text-white/50 border border-white/20 px-2 py-1 uppercase tracking-widest"
+              >AD-HOC</span
+            >
+          </div>
+          <div class="flex-1 flex flex-col justify-center gap-4 min-h-32">
+            <p class="dm-mono text-sm text-white/80 uppercase leading-loose">
+              CUSTOM INTELLIGENCE. BUILT AROUND YOUR ENVIRONMENT, YOUR SENSORS,
+              YOUR MISSION.
+            </p>
+          </div>
+          <a
+            href="mailto:{i18n.t(
+              'section.footer.email',
+            )}?subject=AD-HOC intelligence"
+            class="dm-mono text-[10px] uppercase tracking-widest text-white/80 border border-white/30 px-5 py-2.5 hover:bg-white hover:text-black transition-all duration-300 text-center"
+          >
+            GET IN TOUCH →
+          </a>
+        </div>
       </div>
     </div>
   </section>
+
   <footer
     class="pt-32 pb-16 md:pt-48 md:pb-24 px-6 md:px-24 bg-brand-fg text-brand-bg flex flex-col items-center justify-center text-center overflow-hidden transition-colors duration-500"
   >
@@ -189,7 +244,6 @@
     >
       CREATORS
     </p>
-
     <div
       class="mt-20 md:mt-32 w-full flex flex-col md:flex-row justify-start items-center opacity-60 dm-mono text-[10px] md:text-sm gap-6 md:gap-8"
     >
@@ -218,35 +272,20 @@
   }
 
   @keyframes flicker {
-    0% {
+    0%,
+    10%,
+    20%,
+    40% {
       opacity: 0;
     }
-    5% {
-      opacity: 1;
-    }
-    10% {
-      opacity: 0;
-    }
-    15% {
-      opacity: 1;
-    }
-    20% {
-      opacity: 0;
-    }
-    25% {
+    5%,
+    15%,
+    25%,
+    45% {
       opacity: 1;
     }
     30% {
       opacity: 0.4;
-    }
-    35% {
-      opacity: 1;
-    }
-    40% {
-      opacity: 0;
-    }
-    45% {
-      opacity: 1;
     }
     100% {
       opacity: 1;
