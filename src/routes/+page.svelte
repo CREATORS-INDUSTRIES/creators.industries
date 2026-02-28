@@ -358,7 +358,7 @@
         >
       </div>
       <div class="flex flex-1 justify-center">
-        <p class="order-3 md:order-2">Ã‚Â© 2026 CREATORS</p>
+        <p class="order-3 md:order-2">&copy; 2026 CREATORS</p>
       </div>
       <div class="flex flex-1 justify-end">
         <p class="order-2 md:order-3">
