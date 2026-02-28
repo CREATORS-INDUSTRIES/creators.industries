@@ -24,7 +24,15 @@ const translations: Translations = {
         'section.process.02.desc': "WE DEFINE SCOPE AND BUDGET. CLOSING THE DEAL.",
         'section.process.03.title': 'EXECUTION',
         'section.process.03.desc': "WE BUILD THE SOFTWARE THAT MATTERS TO YOUR COMPANY.",
-        'section.footer.email': 'syn@creators.industries'
+        'section.footer.email': 'syn@creators.industries',
+        'about.title': 'Our mission',
+        'about.description1': "We desing systems that think, decide, and act independently in the world.\nIntelligence must be local, resilient, and native to the system.",
+        'about.value1.title': 'SYSTEMS ARCHITECTURE',
+        'about.value1.desc': 'Deep expertise in designing distributed systems that operate at the edge. We build resilient architectures capable of handling real-time constraints and uncertain environments without centralized control.',
+        'about.value2.title': 'ARTIFICIAL VISION',
+        'about.value2.desc': 'Specialized in computer vision systems that enable autonomous perception. Our visual understanding pipelines process complex scenes in real-time, powering detection, tracking, and decision-making.',
+        'about.value3.title': 'EDGE INTELLIGENCE',
+        'about.value3.desc': 'We leverage multimodal sensors and onboard AI to create systems that think independently. Low latency, high autonomy, total reliability—even when connectivity fails.'
     },
     es: {
         'nav.english': 'inglés',
@@ -47,7 +55,15 @@ const translations: Translations = {
         'section.process.02.desc': "DEFINIMOS ALCANCE Y PRESUPUESTO. CERRAMOS EL ACUERDO.",
         'section.process.03.title': 'EJECUCIÓN',
         'section.process.03.desc': "CONSTRUIMOS EL SOFTWARE QUE LE IMPORTA A TU EMPRESA.",
-        'section.footer.email': 'syn@creators.industries'
+        'section.footer.email': 'syn@creators.industries',
+        'about.title': 'SISTEMAS AUTÓNOMOS PARA EL EDGE',
+        'about.description1': "CREATORS was founded to build autonomy properly.\n\nWe are engineers focused on designing systems that think, decide, and act independently in the physical world.\n\nWe believe intelligence must be localized, resilient, and structurally integrated into the systems it powers.\n\nAutonomy is not a feature.\nIt is a design principle.",
+        'about.value1.title': 'ARQUITECTURA DE SISTEMAS',
+        'about.value1.desc': 'Profunda experiencia en diseño de sistemas distribuidos que operan en el edge. Construimos arquitecturas resilientes capaces de manejar restricciones de tiempo real y entornos inciertos sin control centralizado.',
+        'about.value2.title': 'VISIÓN ARTIFICIAL',
+        'about.value2.desc': 'Especializados en sistemas de visión por computadora que permiten percepción autónoma. Nuestros pipelines de comprensión visual procesan escenas complejas en tiempo real, impulsando detección, rastreo y toma de decisiones.',
+        'about.value3.title': 'INTELIGENCIA EN EL EDGE',
+        'about.value3.desc': 'Aprovechamos sensores multimodales e IA embarcada para crear sistemas que piensan de manera independiente. Baja latencia, alta autonomía, confiabilidad total—incluso cuando la conectividad falla.'
     }
 };
 

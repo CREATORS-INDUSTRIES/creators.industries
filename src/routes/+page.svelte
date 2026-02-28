@@ -26,6 +26,16 @@
     { src: v0, width: "auto", mx: "-10px" }, // S
   ];
   let activeLetters = $state(new Array(letterItems.length).fill(false));
+  let aboutSection = $state(null);
+  let aboutProgress = $state(0);
+  let aboutTextLight = $state(1);
+  let droneCard = $state(null);
+  let droneCardProgress = $state(0);
+  let classifiedCard = $state(null);
+  let classifiedCardProgress = $state(0);
+  let adHocCard = $state(null);
+  let adHocCardProgress = $state(0);
+  let isMobile = $state(false);
 
   const i18n = getI18n();
 
@@ -64,6 +74,76 @@
     setTimeout(() => {
       highlightActive = true;
     }, 2300);
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const updateViewport = () => {
+      isMobile = window.innerWidth < 768;
+    };
+    let ticking = false;
+
+    const updateScrollEffects = () => {
+      const viewportH = window.innerHeight;
+      if (aboutSection) {
+        const rect = aboutSection.getBoundingClientRect();
+        const start = viewportH * 0.9;
+        const end = viewportH * 0.25;
+        const fadeInRaw = (start - rect.top) / (start - end);
+        const fadeIn = clamp(fadeInRaw, 0, 1);
+        const fadeOutStart = viewportH * 0.08;
+        const fadeOut = clamp(
+          1 - Math.max(0, fadeOutStart - rect.top) / (rect.height * 0.35),
+          0,
+          1,
+        );
+        aboutProgress = fadeIn;
+        aboutTextLight = 0.72 + fadeOut * 0.28;
+      }
+
+      if (droneCard) {
+        const droneRect = droneCard.getBoundingClientRect();
+        const droneStart = viewportH * 0.95;
+        const droneEnd = viewportH * 0.45;
+        const rawDrone = (droneStart - droneRect.top) / (droneStart - droneEnd);
+        droneCardProgress = clamp(rawDrone, 0, 1);
+      }
+
+      if (classifiedCard) {
+        const rect = classifiedCard.getBoundingClientRect();
+        const start = viewportH * 0.95;
+        const end = viewportH * 0.45;
+        const raw = (start - rect.top) / (start - end);
+        classifiedCardProgress = clamp(raw, 0, 1);
+      }
+
+      if (adHocCard) {
+        const rect = adHocCard.getBoundingClientRect();
+        const start = viewportH * 0.92;
+        const end = viewportH * 0.62;
+        const raw = (start - rect.top) / (start - end);
+        adHocCardProgress = clamp(raw, 0, 1);
+      }
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateScrollEffects();
+        ticking = false;
+      });
+    };
+
+    updateViewport();
+    updateScrollEffects();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", updateViewport);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", updateViewport);
+    };
   });
 </script>
 
@@ -119,8 +199,22 @@
     </div>
   </section>
 
+  <!-- WHO WE ARE SECTION -->
+  <section bind:this={aboutSection} class="w-screen pt-4 md:pt-6 pb-2 md:pb-4 px-6 md:px-24 bg-black flex flex-col items-center overflow-hidden">
+    <div class="w-full max-w-6xl will-change-transform" style="opacity: {aboutProgress}; transform: translateY({(1 - aboutProgress) * 64}px);">
+      <div class="max-w-4xl mx-auto text-center" style="filter: brightness({aboutTextLight});">
+        <h2 class="text-4xl md:text-5xl font-bold uppercase syne tracking-tight leading-tight text-white mb-6 md:mb-8">
+          {i18n.t("about.title")}
+        </h2>
+        <p class="dm-mono text-sm md:text-base uppercase leading-relaxed whitespace-pre-line tracking-wide text-white/80">
+          {i18n.t("about.description1")}
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section
-    class="w-screen py-20 md:py-32 px-6 md:px-24 bg-black flex flex-col items-center overflow-hidden"
+    class="w-screen pt-6 md:pt-10 pb-20 md:pb-32 px-6 md:px-24 bg-black flex flex-col items-center overflow-hidden"
   >
     <div class="w-full max-w-6xl">
       <div class="flex items-center gap-6 mb-12">
@@ -135,7 +229,9 @@
         class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-[1px] bg-white/10"
       >
         <div
-          class="md:col-span-2 md:row-span-2 bg-black p-8 flex flex-col gap-6"
+          bind:this={droneCard}
+          class="md:col-span-2 md:row-span-2 bg-black p-8 flex flex-col gap-6 will-change-transform"
+          style="opacity: {isMobile ? 1 : 0.35 + droneCardProgress * 0.65}; transform: translateX({isMobile ? 0 : (1 - droneCardProgress) * -120}px);"
         >
           <div class="flex items-center justify-end">
             <span
@@ -180,11 +276,15 @@
             )}?subject=Drone detection system demo"
             class="dm-mono sm:w-fit h-fit text-[10px] uppercase tracking-widest text-white/80 border border-white/30 px-5 py-2.5 hover:bg-white hover:text-black transition-all duration-300 text-center"
           >
-            REQUEST DEMO →
+            REQUEST DEMO ->
           </a>
         </div>
 
-        <div class="bg-black p-8 flex flex-col gap-5">
+        <div
+          bind:this={classifiedCard}
+          class="bg-black p-8 flex flex-col gap-5 will-change-transform"
+          style="opacity: {isMobile ? 1 : 0.35 + classifiedCardProgress * 0.65}; transform: translateX({isMobile ? 0 : (1 - classifiedCardProgress) * 110}px);"
+        >
           <div class="flex items-center justify-end">
             <span
               class="dm-mono text-[10px] text-white/20 border border-white/10 px-2 py-1 uppercase tracking-widest"
@@ -210,7 +310,11 @@
           </h3>
         </div>
 
-        <div class="bg-zinc-700 p-8 flex flex-col gap-5">
+        <div
+          bind:this={adHocCard}
+          class="bg-black p-8 flex flex-col gap-5 will-change-transform"
+          style="opacity: {isMobile ? 1 : 0.45 + adHocCardProgress * 0.55}; transform: translateX({isMobile ? 0 : (1 - adHocCardProgress) * 90}px); background-color: rgb({isMobile ? 63 : Math.round(63 * adHocCardProgress)} {isMobile ? 63 : Math.round(63 * adHocCardProgress)} {isMobile ? 70 : Math.round(70 * adHocCardProgress)});"
+        >
           <div class="flex items-center justify-end">
             <span
               class="dm-mono text-[10px] text-white/50 border border-white/20 px-2 py-1 uppercase tracking-widest"
@@ -229,13 +333,12 @@
             )}?subject=AD-HOC intelligence"
             class="dm-mono text-[10px] uppercase tracking-widest text-white/80 border border-white/30 px-5 py-2.5 hover:bg-white hover:text-black transition-all duration-300 text-center"
           >
-            GET IN TOUCH →
+            GET IN TOUCH ->
           </a>
         </div>
       </div>
     </div>
   </section>
-
   <footer
     class="pt-32 pb-16 md:pt-48 md:pb-24 px-6 md:px-24 bg-brand-fg text-brand-bg flex flex-col items-center justify-center text-center overflow-hidden transition-colors duration-500"
   >
@@ -255,7 +358,7 @@
         >
       </div>
       <div class="flex flex-1 justify-center">
-        <p class="order-3 md:order-2">© 2026 CREATORS</p>
+        <p class="order-3 md:order-2">Ã‚Â© 2026 CREATORS</p>
       </div>
       <div class="flex flex-1 justify-end">
         <p class="order-2 md:order-3">
