@@ -7,17 +7,21 @@
 </script>
 
 <nav
-  class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:px-14 flex justify-between items-center transition-colors duration-500 {isLight ? 'bg-white/95 backdrop-blur-sm border-b border-black/10' : 'bg-black'}"
+  class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:px-14 flex justify-between items-center transition-colors duration-500 {isLight
+    ? 'bg-white/95 backdrop-blur-sm border-b border-black/10'
+    : 'bg-black'}"
 >
   <a
     href="/"
-    class="flex items-center transition-opacity duration-300 hover:opacity-80 {isLight ? 'text-black' : 'text-white'}"
+    class="flex items-center transition-opacity duration-300 hover:opacity-80 {isLight
+      ? 'text-black'
+      : 'text-white'}"
   >
     {#if useLogo}
       <img
         src={isLight ? logoLight : logoDark}
         alt="CREATORS"
-        class="h-4 md:h-5 w-auto object-contain"
+        class="h-3.5 md:h-3.5 w-auto object-contain"
       />
     {:else}
       <span class="dm-mono text-xs font-light uppercase tracking-widest">
