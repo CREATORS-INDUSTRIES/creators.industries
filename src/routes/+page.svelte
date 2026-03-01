@@ -271,12 +271,10 @@
           </div>
 
           <a
-            href="mailto:{i18n.t(
-              'section.footer.email',
-            )}?subject=Drone detection system demo"
+            href="/contact"
             class="dm-mono sm:w-fit h-fit text-[10px] uppercase tracking-widest text-white/80 border border-white/30 px-5 py-2.5 hover:bg-white hover:text-black transition-all duration-300 text-center"
           >
-            REQUEST DEMO ->
+            REQUEST DEMO →
           </a>
         </div>
 
@@ -328,12 +326,10 @@
             </p>
           </div>
           <a
-            href="mailto:{i18n.t(
-              'section.footer.email',
-            )}?subject=AD-HOC intelligence"
+            href="/contact"
             class="dm-mono text-[10px] uppercase tracking-widest text-white/80 border border-white/30 px-5 py-2.5 hover:bg-white hover:text-black transition-all duration-300 text-center"
           >
-            GET IN TOUCH ->
+            GET IN TOUCH →
           </a>
         </div>
       </div>
