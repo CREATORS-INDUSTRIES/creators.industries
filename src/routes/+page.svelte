@@ -200,13 +200,28 @@
   </section>
 
   <!-- WHO WE ARE SECTION -->
-  <section bind:this={aboutSection} class="w-screen pt-4 md:pt-6 pb-2 md:pb-4 px-6 md:px-24 bg-black flex flex-col items-center overflow-hidden">
-    <div class="w-full max-w-6xl will-change-transform" style="opacity: {aboutProgress}; transform: translateY({(1 - aboutProgress) * 64}px);">
-      <div class="max-w-4xl mx-auto text-center" style="filter: brightness({aboutTextLight});">
-        <h2 class="text-4xl md:text-5xl font-bold uppercase syne tracking-tight leading-tight text-white mb-6 md:mb-8">
+  <section
+    bind:this={aboutSection}
+    class="w-screen pt-4 md:pt-6 pb-2 md:pb-4 px-6 md:px-24 bg-black flex flex-col items-center overflow-hidden"
+  >
+    <div
+      class="w-full max-w-6xl will-change-transform"
+      style="opacity: {aboutProgress}; transform: translateY({(1 -
+        aboutProgress) *
+        64}px);"
+    >
+      <div
+        class="max-w-4xl mx-auto text-center"
+        style="filter: brightness({aboutTextLight});"
+      >
+        <h2
+          class="text-4xl md:text-5xl font-bold uppercase syne tracking-tight leading-tight text-white mb-6 md:mb-8"
+        >
           {i18n.t("about.title")}
         </h2>
-        <p class="dm-mono text-sm md:text-base uppercase leading-relaxed whitespace-pre-line tracking-wide text-white/80">
+        <p
+          class="dm-mono text-sm md:text-base uppercase leading-relaxed whitespace-pre-line tracking-wide text-white/80"
+        >
           {i18n.t("about.description1")}
         </p>
       </div>
@@ -231,7 +246,11 @@
         <div
           bind:this={droneCard}
           class="md:col-span-2 md:row-span-2 bg-black p-8 flex flex-col gap-6 will-change-transform"
-          style="opacity: {isMobile ? 1 : 0.35 + droneCardProgress * 0.65}; transform: translateX({isMobile ? 0 : (1 - droneCardProgress) * -120}px);"
+          style="opacity: {isMobile
+            ? 1
+            : 0.35 + droneCardProgress * 0.65}; transform: translateX({isMobile
+            ? 0
+            : (1 - droneCardProgress) * -120}px);"
         >
           <div class="flex items-center justify-end">
             <span
@@ -243,11 +262,7 @@
           <h2
             class="dm-mono text-lg md:text-xl font-thin uppercase tracking-tight text-white/20"
           >
-            <ScrambleText
-              length={8}
-              speed={100}
-              class="text-white tabular-nums"
-            />
+            <span class="text-white">GALILEO</span>
             - DRONE DETECTION SYSTEM
           </h2>
 
@@ -271,17 +286,22 @@
           </div>
 
           <a
-            href="/contact"
+            href="https://galileo.creators.industries"
             class="dm-mono sm:w-fit h-fit text-[10px] uppercase tracking-widest text-white/80 border border-white/30 px-5 py-2.5 hover:bg-white hover:text-black transition-all duration-300 text-center"
           >
-            REQUEST DEMO →
+            TRY IT OUT →
           </a>
         </div>
 
         <div
           bind:this={classifiedCard}
           class="bg-black p-8 flex flex-col gap-5 will-change-transform"
-          style="opacity: {isMobile ? 1 : 0.35 + classifiedCardProgress * 0.65}; transform: translateX({isMobile ? 0 : (1 - classifiedCardProgress) * 110}px);"
+          style="opacity: {isMobile
+            ? 1
+            : 0.35 +
+              classifiedCardProgress * 0.65}; transform: translateX({isMobile
+            ? 0
+            : (1 - classifiedCardProgress) * 110}px);"
         >
           <div class="flex items-center justify-end">
             <span
@@ -311,7 +331,17 @@
         <div
           bind:this={adHocCard}
           class="bg-black p-8 flex flex-col gap-5 will-change-transform"
-          style="opacity: {isMobile ? 1 : 0.45 + adHocCardProgress * 0.55}; transform: translateX({isMobile ? 0 : (1 - adHocCardProgress) * 90}px); background-color: rgb({isMobile ? 63 : Math.round(63 * adHocCardProgress)} {isMobile ? 63 : Math.round(63 * adHocCardProgress)} {isMobile ? 70 : Math.round(70 * adHocCardProgress)});"
+          style="opacity: {isMobile
+            ? 1
+            : 0.45 + adHocCardProgress * 0.55}; transform: translateX({isMobile
+            ? 0
+            : (1 - adHocCardProgress) * 90}px); background-color: rgb({isMobile
+            ? 63
+            : Math.round(63 * adHocCardProgress)} {isMobile
+            ? 63
+            : Math.round(63 * adHocCardProgress)} {isMobile
+            ? 70
+            : Math.round(70 * adHocCardProgress)});"
         >
           <div class="flex items-center justify-end">
             <span
